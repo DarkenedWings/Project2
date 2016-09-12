@@ -288,6 +288,7 @@ namespace AddressBook
                             default:
                                 break;
                         }
+                        Console.ReadLine();
                         break;
                     case 5:
                         Console.Clear();
@@ -328,15 +329,18 @@ namespace AddressBook
                         else
                             fileType = ".csv";
                         FileStream fileCreate = new FileStream((response + fileType), FileMode.OpenOrCreate);
+                        fileCreate.Close();
+
                         StreamWriter entry = new StreamWriter((response + fileType));
                         for (int i = 0; i < AddressList.Count; i++)
                         {
-                            AddressList[i].Show();
-                            entry.Write(',');
+                            entry.Write(AddressList[i].GetStreetNumber().ToString() + ',' + AddressList[i].GetStreetName() + ',' + AddressList[i].GetCity() + ',' +
+                                  AddressList[i].GetState() + ',' + AddressList[i].GetZipCode() + ',' + AddressList[i].GetFirstName() + ',' + AddressList[i].GetLastName() + ',');
                         }
-                        entry.Close();
-                        fileCreate.Close();
+                        entry.Close();                        
                         Console.Clear();
+                        Console.WriteLine("Save Complete!");
+                        Console.ReadLine();
                         break;
                     case 7:
                         do
@@ -368,13 +372,18 @@ namespace AddressBook
                         Console.WriteLine("What is the name of the file you would like to load?");
                         string fileName = Console.ReadLine();
 
+                        for (int i = AddressList.Count - 1; i >= 0; i--)
+                            AddressList.RemoveAt(i);
+
                         StreamReader loadFile = new StreamReader((fileName + fileType));
                         string loadedFile = loadFile.ReadLine();
                         string[] splitLoad = loadedFile.Split(',');
-                        for (int i = 0; i < splitLoad.Length; i++)
+                        for (int i = 0; i + 6 < splitLoad.Length; i += 7)
                         {
-                            AddressList.Add(splitLoad[i]);
+                            AddressList.Add(new BookEntry(int.Parse(splitLoad[i]), splitLoad[i + 1], splitLoad[i + 2], splitLoad[i + 3], int.Parse(splitLoad[i + 4]),
+                                splitLoad[i + 5], splitLoad[i + 6]));
                         }
+                        loadFile.Close();
 
                         break;
                     case 8:
