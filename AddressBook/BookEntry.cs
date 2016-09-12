@@ -56,5 +56,22 @@ namespace AddressBook
         {
             return ZipCode;
         }
+
+        public string GetFirstName()
+        {
+            return FirstName;
+        }
+
+        public string GetLastName()
+        {
+            return LastName;
+        }
+
+        public void Show()
+        {
+            Console.WriteLine("Name: " + FirstName + " " + LastName + "     Address: " + StreetNumber + " " + StreetName);
+            Console.WriteLine("     City: " + City + "     State: " + State + "     ZipCode: " + ZipCode);
+        }
+    
     }
 }
